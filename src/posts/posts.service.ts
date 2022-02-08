@@ -36,4 +36,8 @@ export class PostsService {
             limit: limit
         }
     }
+
+    async getPost(slug: string) {
+        return await this.postModel.findOne({slug: slug}).exec();
+    }
 }
