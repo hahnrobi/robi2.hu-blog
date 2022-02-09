@@ -30,7 +30,7 @@ export class PostsService {
             limit = 10;
         }
         return {
-            posts: await this.postModel.find().skip(offset).limit(limit).exec(),
+            posts: await this.postModel.find().select(['-content']).sort([['publishDate', -1]]).skip(offset).limit(limit).populate("author").exec(),
             total: await this.postModel.count().exec(),
             offset: offset,
             limit: limit
