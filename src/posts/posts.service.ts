@@ -38,6 +38,6 @@ export class PostsService {
     }
 
     async getPost(slug: string) {
-        return await this.postModel.findOne({slug: slug}).exec();
+        return await this.postModel.findOne({slug: slug}).populate("author").exec();
     }
 }
