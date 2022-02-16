@@ -9,7 +9,7 @@ import { PostsModule } from './posts/posts.module';
   imports: [
     ConfigModule.forRoot({ envFilePath: `.env` }),
     MongooseModule.forRoot(process.env.DATABASE_CONN),
-    PostsModule
+    PostsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

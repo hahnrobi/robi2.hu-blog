@@ -4,10 +4,16 @@ import { join } from 'path';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
-  const app = await NestFactory.create<NestExpressApplication>(AppModule, { cors: true });
+  const app = await NestFactory.create<NestExpressApplication>(AppModule, {
+    cors: true,
+  });
 
-  app.useStaticAssets(join(__dirname, '..', 'static'), {prefix: '/static', immutable: true, maxAge: 36000000});
-  
+  app.useStaticAssets(join(__dirname, '..', 'static'), {
+    prefix: '/static',
+    immutable: true,
+    maxAge: 36000000,
+  });
+
   await app.listen(3000);
 }
 bootstrap();
