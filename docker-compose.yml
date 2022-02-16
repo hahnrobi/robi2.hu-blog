@@ -1,0 +1,22 @@
+version: "3.8"
+services:
+  mongodb:
+    image : mongo
+    container_name: mongodb
+    volumes:
+    - robi2blog_data:/data/db
+    restart: unless-stopped
+  robi2blog:
+    build: .
+    container_name: robi2blog
+    volumes:
+        - ./static:/usr/src/robi2blog/static
+    environment:
+      - 'DATABASE_CONN=mongodb://mongodb/robi2blog'
+    ports:
+    - 9901:3000
+    restart: unless-stopped
+    
+volumes:
+    robi2blog_data:
+        external: false
