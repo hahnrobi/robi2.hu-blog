@@ -4,6 +4,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { PostsModule } from './posts/posts.module';
+import { SpotifyModule } from './spotify/spotify.module';
 
 export const configuration = () => ({
   NODE_ENV: process.env.NODE_ENV,
@@ -16,6 +17,7 @@ export const configuration = () => ({
     ConfigModule.forRoot({ envFilePath: `.env` , load: [configuration]}),
     MongooseModule.forRoot(process.env.DATABASE_CONN),
     PostsModule,
+    SpotifyModule,
   ],
   controllers: [AppController],
   providers: [AppService],
