@@ -5,7 +5,9 @@ import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
-    cors: true,
+    cors: {
+      origin: ['http://robi2.hu', 'https://robi2.hu', 'http://localhost:4200']
+    },
   });
 
   app.useStaticAssets(join(__dirname, '..', 'static'), {
