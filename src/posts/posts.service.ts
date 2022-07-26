@@ -2,10 +2,14 @@ import { Injectable } from '@nestjs/common';
 import { Post, PostSchema } from './post.model';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { PostCategory } from './post-category/post-category.model';
 
 @Injectable()
 export class PostsService {
-  constructor(@InjectModel('Post') private readonly postModel: Model<Post>) {}
+  constructor(
+    @InjectModel('Post') private readonly postModel: Model<Post>,
+    @InjectModel("PostCategory") private readonly postCategoryModel: Model<PostCategory>
+    ) {}
 
   async insertTest(
     title: string,
@@ -51,5 +55,16 @@ export class PostsService {
       .findOne({ slug: slug })
       .populate('author')
       .exec();
+  }
+  async getCategories() {
+    return await this.postCategoryModel.find().exec();
+  }
+  async addCategory(category: PostCategory) {
+    const newCategory = new this.postCategoryModel({
+      title: category.title,
+      slug: category.slug
+    })
+    const id = await newCategory.save();
+    return id;
   }
 }
