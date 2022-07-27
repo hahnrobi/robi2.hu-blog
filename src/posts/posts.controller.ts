@@ -12,4 +12,8 @@ export class PostsController {
   async getPost(@Param('slug') slug: string) {
     return await this.postsService.getPost(slug);
   }
+  @Get('id/:id')
+  async getPostById(@Param('id') id: string) {
+    return await this.postsService.getPostById(id);
+  }
 }

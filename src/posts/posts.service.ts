@@ -56,6 +56,13 @@ export class PostsService {
       .populate('author')
       .exec();
   }
+
+  async getPostById(id: string) {
+    return await this.postModel
+      .findById(id)
+      .populate('author')
+      .exec();
+  }
   async getCategories() {
     return await this.postCategoryModel.find().exec();
   }
