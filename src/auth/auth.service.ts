@@ -17,11 +17,11 @@ export class AuthService {
       const { password, ...result } = user;
       return result;
     }
+    await delayLogin();
     return null;
   }
 
   public async login(user: any) {
-    await delayLogin();
     const payload = { sub: user.userId };
     return {
       access_token: this.jwtService.sign(payload),
@@ -33,7 +33,7 @@ function delayLogin() {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         resolve('done!');
-      }, Math.floor(Math.random() * 12) * 100);
+      }, Math.floor(Math.random() * 12) * 600);
     });
  }
  
