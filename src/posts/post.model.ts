@@ -7,7 +7,8 @@ export const PostSchema = new mongoose.Schema({
   slug: { type: String, required: true, unique: true, index: true },
   publishDate: { type: Date, required: true, default: Date.now },
   excerpt: { type: String },
-  content: { type: String, required: true },
+  content: { type: String },
+  body: {type: String, required: true},
   featuredImage: { type: String },
   featuredImageCopyright: { type: String },
   tags: [
