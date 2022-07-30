@@ -4,6 +4,9 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { PostsModule } from './posts/posts.module';
+import { AuthModule } from './auth/auth.module';
+import { UsersModule } from './users/users.module';
+import { CryptoModule } from './crypto/crypto.module';
 
 export const configuration = () => ({
   NODE_ENV: process.env.NODE_ENV,
@@ -16,6 +19,9 @@ export const configuration = () => ({
     ConfigModule.forRoot({ envFilePath: `.env` , load: [configuration]}),
     MongooseModule.forRoot(process.env.DATABASE_CONN),
     PostsModule,
+    AuthModule,
+    UsersModule,
+    CryptoModule,
   ],
   controllers: [AppController],
   providers: [AppService],
