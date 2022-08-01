@@ -22,6 +22,9 @@ export class UsersService {
   ];
 
   async findOne(email: string): Promise<User | undefined> {
-    return this.userModel.findOne({email: email});
+    return this.userModel.findOne({"email" : email}).exec();
+  }
+  async findById(id: string): Promise<User | undefined> {
+    return this.userModel.findById(id);
   }
 }
