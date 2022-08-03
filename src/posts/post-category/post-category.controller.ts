@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put, Query } from '@nestjs/common';
 import { PostsService } from '../posts.service';
 import { PostCategory } from './post-category.model';
 
@@ -8,11 +8,15 @@ export class PostCategoryController {
 
     }
     @Get()
-    async getAll() {
-      return await this.postsService.getCategories();
+    async getAll(@Query('offset') offset: number = 0, @Query('limit') limit = 0) {
+      return await this.postsService.getCategories(offset, limit);
     }
     @Post()
     async addCategory(@Body() category: PostCategory) {
       return await this.postsService.addCategory(category);
+    }
+    @Put(":id")
+    async updateCategory(@Param('id') id: string, @Body() category: PostCategory) {
+      return await this.postsService.updateCategory(id, category);
     }
 }

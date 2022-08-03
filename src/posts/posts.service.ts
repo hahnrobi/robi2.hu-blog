@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { Post, PostSchema } from './post.model';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
@@ -63,8 +63,23 @@ export class PostsService {
       .populate('author')
       .exec();
   }
-  async getCategories() {
-    return await this.postCategoryModel.find().exec();
+  async getCategories(offset = 0, limit = 10) {
+    if (limit > 20) {
+      limit = 20;
+    }
+    if (limit <= 0) {
+      limit = 10;
+    }
+    return {
+      categories: await this.postCategoryModel
+        .find()
+        .skip(offset)
+        .limit(limit)
+        .exec(),
+      total: await this.postCategoryModel.count().exec(),
+      offset: offset,
+      limit: limit,
+    };
   }
   async addCategory(category: PostCategory) {
     const newCategory = new this.postCategoryModel({
@@ -73,5 +88,10 @@ export class PostsService {
     })
     const id = await newCategory.save();
     return id;
+  }
+  async updateCategory(id: string, category: PostCategory) {
+    Logger.log(id);
+    Logger.log(category);
+    return this.postCategoryModel.findByIdAndUpdate(id, category).exec();
   }
 }
