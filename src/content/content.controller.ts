@@ -1,59 +1,54 @@
 import { Body, Controller, Post, Optional, Param, Response, HttpException, HttpStatus, Get, Query, ParseIntPipe, DefaultValuePipe, Delete, Put } from '@nestjs/common';
 import { ContentService } from './content.service';
 
-@Controller('content')
+@Controller('article')
 export class ContentController {
     constructor(private readonly content: ContentService) {}
 
-    @Get(':contentType')
+    @Get('')
     async getItems(
-        @Param('contentType') contentType,
         @Optional() @Query('pageSize', new DefaultValuePipe(20),  ParseIntPipe) pageSize,
         @Optional() @Query('pageIndex',  new DefaultValuePipe(0), ParseIntPipe) pageIndex = 0
     )
     {
-        return this.content.getItems(contentType, {pageSize: pageSize, pageIndex: pageIndex});
+        return this.content.getItems({pageSize: pageSize, pageIndex: pageIndex});
     }
-    @Get(':contentType/by-id/:id')
+    @Get('id/:id')
     async getItemById(
-        @Param('contentType') contentType,
         @Param('id') id,
     )
     {
-        return this.content.getItemById(contentType, id);
+        return this.content.getItemById(id);
     }
-    @Get(':contentType/by-slug/:id')
+    @Get('slug/:id')
     async getItemBySlug(
-        @Param('contentType') contentType,
         @Param('slug') slug,
     )
     {
-        return this.content.getItemBySlug(contentType, slug);
+        return this.content.getItemBySlug(slug);
     }
 
-    @Delete(':contentType/:id')
+    @Delete(':id')
     async deleteItem(
-        @Param('contentType') contentType,
         @Param('id') id,
     )
     {
-        return this.content.deleteItem(contentType, id);
+        return this.content.deleteItem(id);
     }
 
     
-    @Put(':contentType/:id')
+    @Put(':id')
     async updateItem(
-        @Param('contentType') contentType,
         @Param('id') id,
         @Body() data
     )
     {
-        return this.content.updateItem(contentType, id, data);
+        return this.content.updateItem(id, data);
     }
 
-    @Post(':contentType')
-    async addItem(@Param('contentType') contentType, @Body() body) {
-        const result = await this.content.addItem(contentType, body);
+    @Post('')
+    async addItem(@Body() body) {
+        const result = await this.content.addItem(body);
         if(result) {
             return result;
         } else {

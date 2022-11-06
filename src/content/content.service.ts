@@ -1,34 +1,39 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
+import { Logger } from '@nestjs/common/services';
 import { ComplexResponse, ListResponseMeta } from 'src/definitions/api-response';
 import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class ContentService {
-    constructor(private readonly prisma:PrismaService) {
+    private readonly contentType: string;
+    constructor(
+        @Inject('CONTENT_TYPE') private ct: string,
+        private readonly prisma:PrismaService) {
+            this.contentType = ct;
+            Logger.log("init with injector value: " + this.contentType);
     }
 
-    async addItem<T>(itemTypeName: string, data: T): Promise<T | boolean> {
-        if(this.prisma.hasOwnProperty(itemTypeName)) {
-            return this.prisma[itemTypeName].create({data});
+    async addItem<T>(data: T): Promise<T | boolean> {
+        if(this.prisma.hasOwnProperty(this.contentType)) {
+            return this.prisma[this.contentType].create({data});
         }
         return false;
     }
 
     async getItems<T>(
-        itemTypeName: string,
         args = {
             pageIndex: 0,
             pageSize: 20
         }
     ): Promise<ComplexResponse<T[], ListResponseMeta>> {
-        if(this.prisma.hasOwnProperty(itemTypeName)) {
+        if(this.prisma.hasOwnProperty(this.contentType)) {
             return {
                 meta:  {
                     pageIndex: args.pageIndex,
                     pageSize: args.pageSize,
-                    total: await this.prisma[itemTypeName].count()
+                    total: await this.prisma[this.contentType].count()
                 },
-                items: await this.prisma[itemTypeName].findMany({
+                items: await this.prisma[this.contentType].findMany({
                     take: args.pageSize,
                     skip: args.pageIndex
                 })
@@ -36,16 +41,16 @@ export class ContentService {
         }
     }
 
-    async getItemById<T>(itemTypeName: string, id: string) {
-        return this.prisma[itemTypeName].findUnique({
+    async getItemById<T>(id: string) {
+        return this.prisma[this.contentType].findUnique({
             where: {
                 id: id
             }
         })
     }
 
-    async getItemBySlug<T>(itemTypeName: string, slug: string) {
-        return this.prisma[itemTypeName].findUnique({
+    async getItemBySlug<T>(slug: string) {
+        return this.prisma[this.contentType].findUnique({
             where: {
                 slug: slug
             }
@@ -53,8 +58,8 @@ export class ContentService {
     }
 
  
-    async updateItem<T>(itemTypeName: string, id: string, data: T) {
-        return this.prisma[itemTypeName].update({
+    async updateItem<T>(id: string, data: T) {
+        return this.prisma[this.contentType].update({
             where: {
                 id: id
             }, 
@@ -62,8 +67,8 @@ export class ContentService {
         })
     }  
 
-    async deleteItem<T>(itemTypeName: string, id: string) {
-        return this.prisma[itemTypeName].delete({
+    async deleteItem<T>(id: string) {
+        return this.prisma[this.contentType].delete({
             where: {
                 id: id
             }

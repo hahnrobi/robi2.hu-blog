@@ -4,7 +4,9 @@ import { ContentController } from './content.controller';
 import { PrismaModule } from 'src/prisma/prisma.module';
 
 @Module({
-  providers: [ContentService],
+  providers: [
+    { provide: 'CONTENT_TYPE', useValue: "article"},
+    ContentService],
   controllers: [ContentController],
   imports: [PrismaModule]
 })
