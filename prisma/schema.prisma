@@ -5,14 +5,39 @@ generator client {
   provider = "prisma-client-js"
 }
 
+generator nestjsDto {
+  provider                        = "prisma-generator-nestjs-dto"
+  output                          = "../src/content/models"
+  outputToNestJsResourceStructure = "true"
+  exportRelationModifierClasses   = "true"
+  reExport                        = "false"
+  createDtoPrefix                 = "Create"
+  updateDtoPrefix                 = "Update"
+  dtoSuffix                       = "Dto"
+  entityPrefix                    = ""
+  entitySuffix                    = ""
+  fileNamingStyle                 = "camel"
+}
+
 datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
 }
 
 model Article {
+  id         String          @default(uuid()) @id
+  title      String
+  content    String?
+  published  Boolean?        @default(false)
+  /// @DtoRelationRequired
+  /// @DtoRelationCanConnectOnCreate
+  category   ArticleCategory @relation(fields: [categorySlug], references: [slug])
+  categorySlug String
+}
+
+model ArticleCategory {
   id        String      @default(uuid()) @id
-  title     String
-  content   String?
-  published Boolean? @default(false)
+  title     String     
+  slug      String      @unique
+  articles  Article[]
 }
