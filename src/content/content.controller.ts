@@ -1,7 +1,6 @@
 import { Body, Controller, Post, Optional, Param, Response, HttpException, HttpStatus, Get, Query, ParseIntPipe, DefaultValuePipe, Delete, Put } from '@nestjs/common';
 import { ContentService } from './content.service';
 
-@Controller('article')
 export class ContentController {
     constructor(private readonly content: ContentService) {}
 
@@ -27,15 +26,6 @@ export class ContentController {
     {
         return this.content.getItemBySlug(slug);
     }
-
-    @Delete(':id')
-    async deleteItem(
-        @Param('id') id,
-    )
-    {
-        return this.content.deleteItem(id);
-    }
-
     
     @Put(':id')
     async updateItem(
@@ -55,4 +45,13 @@ export class ContentController {
             throw new HttpException("Content type does not exists", HttpStatus.NOT_FOUND);
         }
     }
+    
+    @Delete(':id')
+    async deleteItem(
+        @Param('id') id,
+    )
+    {
+        return this.content.deleteItem(id);
+    }
+
 }
