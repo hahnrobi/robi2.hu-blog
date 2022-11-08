@@ -10,7 +10,7 @@ export class ContentController<CreateDto, UpdateDto, T> {
         @Optional() @Query('pageIndex',  new DefaultValuePipe(0), ParseIntPipe) pageIndex = 0
     )
     {
-        return this.content.getItems<T>({pageSize: pageSize, pageIndex: pageIndex});
+        return this.content.getItems<T>({pagination: {pageSize: pageSize, pageIndex: pageIndex}});
     }
     @Get('id/:id')
     async getItemById(

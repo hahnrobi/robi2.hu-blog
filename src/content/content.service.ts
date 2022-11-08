@@ -1,5 +1,6 @@
 import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { Logger } from '@nestjs/common/services';
+import { GetRequestParams } from 'src/definitions/api-request-options';
 import { ComplexResponse, ListResponseMeta } from 'src/definitions/api-response';
 import { PrismaService } from 'src/prisma/prisma.service';
 
@@ -21,21 +22,23 @@ export class ContentService {
     }
 
     async getItems<T>(
-        args = {
-            pageIndex: 0,
-            pageSize: 20
+        args: GetRequestParams<T> = {
+            pagination: {
+                pageIndex: 0,
+                pageSize: 20    
+            }
         }
     ): Promise<ComplexResponse<T[], ListResponseMeta>> {
         if(this.prisma.hasOwnProperty(this.contentType)) {
             return {
                 meta:  {
-                    pageIndex: args.pageIndex,
-                    pageSize: args.pageSize,
+                    pageIndex: args.pagination.pageIndex,
+                    pageSize: args.pagination.pageSize,
                     total: await this.prisma[this.contentType].count()
                 },
                 items: await <T[]>this.prisma[this.contentType].findMany({
-                    take: args.pageSize,
-                    skip: args.pageIndex
+                    take: args.pagination.pageSize,
+                    skip: args.pagination.pageIndex
                 })
             }
         }
