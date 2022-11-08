@@ -15,7 +15,7 @@ export class ContentService {
 
     async addItem<T>(data: T): Promise<T | boolean> {
         if(this.prisma.hasOwnProperty(this.contentType)) {
-            return this.prisma[this.contentType].create({data});
+            return this.prisma[this.contentType].create({data: data});
         }
         return false;
     }
@@ -33,7 +33,7 @@ export class ContentService {
                     pageSize: args.pageSize,
                     total: await this.prisma[this.contentType].count()
                 },
-                items: await this.prisma[this.contentType].findMany({
+                items: await <T[]>this.prisma[this.contentType].findMany({
                     take: args.pageSize,
                     skip: args.pageIndex
                 })
