@@ -9,6 +9,7 @@ import { UsersModule } from './users/users.module';
 import { CryptoModule } from './crypto/crypto.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { ContentModule } from './content/content.module';
+import { AdminModule } from './admin/admin.module';
 
 export const configuration = () => ({
   NODE_ENV: process.env.NODE_ENV,
@@ -26,6 +27,7 @@ export const configuration = () => ({
     CryptoModule,
     PrismaModule,
     ContentModule,
+    AdminModule,
   ],
   controllers: [AppController],
   providers: [AppService],
