@@ -8,6 +8,7 @@ export type PaginationParams = {
 }
 
 export type GetRequestParams<T> = {
+    withSchema?: boolean,
     search?: SearchParam[],
     count?: string[],
     orderBy?: {[key in keyof T]: 'asc' | 'desc'}[],

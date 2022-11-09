@@ -3,15 +3,22 @@ import { Logger } from '@nestjs/common/services';
 import { GetRequestParams } from 'src/definitions/api-request-options';
 import { ComplexResponse, ListResponseMeta } from 'src/definitions/api-response';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { CmsSchemas } from './content-type-schemas';
+import { CmsSchema, ContentTypeCmsSchema } from './content-type-schemas/content-type.schema';
 
 @Injectable()
 export class ContentService {
     private readonly contentType: string;
+    private readonly cmsSchemas: CmsSchema= CmsSchemas;
     constructor(
         @Inject('CONTENT_TYPE') private ct: string,
         private readonly prisma:PrismaService) {
             this.contentType = ct;
             Logger.log("init with injector value: " + this.contentType);
+    }
+
+    getCmsSchema(contentType: string) : ContentTypeCmsSchema | null {
+        return this.cmsSchemas[contentType]
     }
 
     async addItem<T>(data: T): Promise<T | boolean> {
@@ -28,19 +35,20 @@ export class ContentService {
                 pageSize: 20    
             }
         }
-    ): Promise<ComplexResponse<T[], ListResponseMeta>> {
+    ): Promise<ComplexResponse<T[]>> {
         if(this.prisma.hasOwnProperty(this.contentType)) {
-            return {
-                meta:  {
+            const schema = args.withSchema ? this.getCmsSchema(this.contentType) : undefined;
+            const pagination = args.pagination && {
                     pageIndex: args.pagination.pageIndex,
                     pageSize: args.pagination.pageSize,
                     total: await this.prisma[this.contentType].count()
-                },
-                items: await <T[]>this.prisma[this.contentType].findMany({
+            };
+            const items= await <T[]>this.prisma[this.contentType].findMany({
                     take: args.pagination.pageSize,
                     skip: args.pagination.pageIndex
-                })
-            }
+                });
+            
+            return {pagination, items, schema};
         }
     }
 

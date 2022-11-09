@@ -1,6 +1,7 @@
-export type ComplexResponse<T, M> = {
+export type ComplexResponse<T> = {
     items: T,
-    meta: M
+    pagination?: any,
+    schema: any
 }
 
 export type ListResponseMeta = PaginableMeta & {
@@ -8,7 +9,9 @@ export type ListResponseMeta = PaginableMeta & {
 }
 
 export type PaginableMeta = {
-    pageIndex: number,
-    pageSize: number,
-    total: number,
+    pagination: {
+        pageIndex: number,
+        pageSize: number,
+        total: number,
+    }
 }
