@@ -26,7 +26,7 @@ export class ContentService {
             pagination: {
                 pageIndex: 0,
                 pageSize: 20    
-            }
+            },
         }
     ): Promise<ComplexResponse<T[], ListResponseMeta>> {
         if(this.prisma.hasOwnProperty(this.contentType)) {
@@ -38,7 +38,8 @@ export class ContentService {
                 },
                 items: await <T[]>this.prisma[this.contentType].findMany({
                     take: args.pagination.pageSize,
-                    skip: args.pagination.pageIndex
+                    skip: args.pagination.pageIndex,
+                    where: args.filters
                 })
             }
         }
