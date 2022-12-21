@@ -1,5 +1,7 @@
 import { Body, Controller, Post, Optional, Param, Response, HttpException, HttpStatus, Get, Query, ParseIntPipe, DefaultValuePipe, Delete, Put, Logger } from '@nestjs/common';
 import { ContentService } from './content.service';
+import { parse as parseQs } from 'qs';
+import { FilterParams } from 'src/definitions/api-request-options';
 
 export class ContentController<CreateDto, UpdateDto, T> {
     constructor(private readonly content: ContentService) {}
@@ -8,11 +10,13 @@ export class ContentController<CreateDto, UpdateDto, T> {
     async getItems(
         @Optional() @Query('pageSize', new DefaultValuePipe(20),  ParseIntPipe) pageSize,
         @Optional() @Query('pageIndex',  new DefaultValuePipe(0), ParseIntPipe) pageIndex = 0,
-        @Optional() @Query('schema',  new DefaultValuePipe(0), ParseIntPipe) schema = 0
+        @Optional() @Query('schema',  new DefaultValuePipe(0), ParseIntPipe) schema = 0,
+        @Optional() @Query('filters') filtersQs: string
     )
     {
         const withSchema = schema === 1;
-        return this.content.getItems<T>({pagination: {pageSize: pageSize, pageIndex: pageIndex}, withSchema});
+        const filters = parseQs(filtersQs) as FilterParams;
+        return this.content.getItems<T>({pagination: {pageSize: pageSize, pageIndex: pageIndex}, filters: filters, withSchema: withSchema});
     }
     @Get('id/:id')
     async getItemById(

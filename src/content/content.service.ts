@@ -33,7 +33,7 @@ export class ContentService {
             pagination: {
                 pageIndex: 0,
                 pageSize: 20    
-            }
+            },
         }
     ): Promise<ComplexResponse<T[]>> {
         if(this.prisma.hasOwnProperty(this.contentType)) {
@@ -45,13 +45,12 @@ export class ContentService {
             };
             const items= await <T[]>this.prisma[this.contentType].findMany({
                     take: args.pagination.pageSize,
-                    skip: args.pagination.pageIndex
-                });
-            
+                    skip: args.pagination.pageIndex,
+                    where: args.filters
+                })
             return {pagination, items, schema};
-        }
+            }
     }
-
     async getItemById<T>(id: string) {
         return this.prisma[this.contentType].findUnique({
             where: {
