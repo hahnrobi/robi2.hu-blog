@@ -1,4 +1,5 @@
 import { ContentTypeCmsSchema } from '../content-type.schema';
+import { TextField } from '../fields/text';
 
 
 export const articleContentCmsSchema: ContentTypeCmsSchema = {
@@ -6,5 +7,12 @@ export const articleContentCmsSchema: ContentTypeCmsSchema = {
     searchable: false,
     searchableFields: [],
     draftable: false,
-    versioning: false
+    versioning: false,
+    fields: [
+        new TextField(
+            'title',
+            'TITLE', 
+            []
+        )
+    ]
 }

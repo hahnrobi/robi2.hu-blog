@@ -8,5 +8,5 @@ title: string ;
 content: string  | null;
 published: boolean  | null;
 category?: ArticleCategory ;
-categorySlug: string ;
+categoryId: string ;
 }

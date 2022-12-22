@@ -21,9 +21,11 @@ export class ContentController<CreateDto, UpdateDto, T> {
     @Get('id/:id')
     async getItemById(
         @Param('id') id,
+        @Optional() @Query('schema',  new DefaultValuePipe(0), ParseIntPipe) schema = 0,
     )
     {
-        return this.content.getItemById<T>(id);
+        const withSchema = schema === 1;
+        return this.content.getItemById<T>(id, {withSchema: withSchema});
     }
     @Get('slug/:id')
     async getItemBySlug(

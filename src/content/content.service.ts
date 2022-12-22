@@ -51,12 +51,18 @@ export class ContentService {
             return {pagination, items, schema};
             }
     }
-    async getItemById<T>(id: string) {
-        return this.prisma[this.contentType].findUnique({
+    async getItemById<T>(id: string, args: any) {
+        const schema = args.withSchema ? this.getCmsSchema(this.contentType) : undefined;
+
+        return {
+            item: await this.prisma[this.contentType].findUnique({
             where: {
                 id: id
             }
-        })
+        }),
+        schema,
+
+        }
     }
 
     async getItemBySlug<T>(slug: string) {

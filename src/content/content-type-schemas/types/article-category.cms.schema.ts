@@ -6,5 +6,6 @@ export const articleCategoryCmsSchema: ContentTypeCmsSchema = {
     searchable: false,
     searchableFields: [],
     draftable: false,
-    versioning: false
+    versioning: false,
+    fields: []
 }
