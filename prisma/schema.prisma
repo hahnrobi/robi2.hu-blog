@@ -31,8 +31,8 @@ model Article {
   published  Boolean?        @default(false)
   /// @DtoRelationRequired
   /// @DtoRelationCanConnectOnCreate
-  category   ArticleCategory @relation(fields: [categorySlug], references: [slug])
-  categorySlug String
+  category   ArticleCategory @relation(fields: [categoryId], references: [id])
+  categoryId String
 }
 
 model ArticleCategory {
