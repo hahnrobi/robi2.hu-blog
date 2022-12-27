@@ -6,7 +6,7 @@ export abstract class BaseField {
             public name: string,
             public label: string,
             public type: ContentTypeCmsSchemaFieldTypes = 'text',
-            public validation: ContentTypeCmsSchemaFieldValidation[] = []
+            public validations: ContentTypeCmsSchemaFieldValidation[] = []
         ) {
 
         }

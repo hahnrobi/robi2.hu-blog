@@ -1,3 +1,4 @@
+import { TitleField } from './../fields/title';
 import { ContentTypeCmsSchema } from '../content-type.schema';
 import { TextField } from '../fields/text';
 
@@ -9,10 +10,10 @@ export const articleContentCmsSchema: ContentTypeCmsSchema = {
     draftable: false,
     versioning: false,
     fields: [
-        new TextField(
+        new TitleField(
             'title',
             'TITLE', 
-            []
+            [{name: 'required'}, {name: 'minLength', params: 2}]
         )
     ]
 }
