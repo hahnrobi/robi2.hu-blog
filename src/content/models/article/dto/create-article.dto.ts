@@ -9,6 +9,7 @@ export class CreateArticleCategoryRelationInputDto {
 @ApiExtraModels(ConnectArticleCategoryDto,CreateArticleCategoryRelationInputDto)
 export class CreateArticleDto {
   title: string;
+slug: string;
 content?: string;
 published?: boolean;
 category: CreateArticleCategoryRelationInputDto;
