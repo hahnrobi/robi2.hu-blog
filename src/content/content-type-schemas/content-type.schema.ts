@@ -20,7 +20,7 @@ export type ContentTypeCmsSchema = {
     draftable: boolean,
     versioning: boolean,
     fields: ContentTypeCmsSchemaField[],
-    editorLayout?: ContentEditorLayoutBase
+    editorLayout?: ContentEditorLayoutBase[]
 }
 
 export type CmsSchema = {
