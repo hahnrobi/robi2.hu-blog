@@ -1,7 +1,7 @@
 import { SelectField } from './../fields/select';
 import { SlugField } from './../fields/slug';
 import { TitleField } from './../fields/title';
-import { ContentTypeCmsSchema } from '../content-type.schema';
+import { ContentEditorLayoutColumn, ContentEditorLayoutContent, ContentTypeCmsSchema } from '../content-type.schema';
 import { TextField } from '../fields/text';
 
 
@@ -28,5 +28,37 @@ export const articleContentCmsSchema: ContentTypeCmsSchema = {
             [{name: 'required'}],
             'article-category'
         )
-    ]
+    ],
+    editorLayout: {
+        type: 'row',
+        children: [
+            <ContentEditorLayoutColumn>{
+                type: 'column',
+                params: {width: "8"},
+                children: [
+                    <ContentEditorLayoutContent>{
+                        type: 'content',
+                        itemType: 'wysiwyg-1',
+                        fieldName: 'body'
+                    }
+                ]
+            },
+            <ContentEditorLayoutColumn>{
+                type: 'column',
+                params: {width: "4"},
+                children: [
+                    <ContentEditorLayoutContent>{
+                        type: 'content',
+                        itemType: 'field',
+                        fieldName: 'title'
+                    },
+                    <ContentEditorLayoutContent>{
+                        type: 'content',
+                        itemType: 'field',
+                        fieldName: 'slug'
+                    }
+                ]
+            }
+        ]
+    }
 }
