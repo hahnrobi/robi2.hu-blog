@@ -1,5 +1,5 @@
 
-
+import {Prisma} from '@prisma/client'
 
 
 
@@ -7,6 +7,6 @@
 export class UpdateArticleDto {
   title?: string;
 slug?: string;
-content?: string;
+body?: Prisma.InputJsonValue;
 published?: boolean;
 }
