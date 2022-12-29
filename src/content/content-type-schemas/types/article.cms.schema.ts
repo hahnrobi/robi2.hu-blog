@@ -1,3 +1,4 @@
+import { EditorField } from './../fields/editor';
 import { SelectField } from './../fields/select';
 import { SlugField } from './../fields/slug';
 import { TitleField } from './../fields/title';
@@ -22,6 +23,9 @@ export const articleContentCmsSchema: ContentTypeCmsSchema = {
     new SlugField('slug', 'SLUG', [
       { name: 'required' },
       { name: 'minLength', params: 4 },
+    ]),
+    new EditorField('body', 'BODY', [
+      { name: 'required' },
     ]),
     new SelectField(
       'categoryId',
@@ -56,7 +60,7 @@ export const articleContentCmsSchema: ContentTypeCmsSchema = {
               children: [
                 <ContentEditorLayoutContent>{
                   type: 'content',
-                  itemType: 'wysiwyg-1',
+                  itemType: 'editor',
                   fieldName: 'body',
                 },
               ],

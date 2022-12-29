@@ -1,6 +1,6 @@
 
 
-export type ContentTypeCmsSchemaFieldTypes = 'text' | 'textarea' | 'title' | 'slug' | 'select';
+export type ContentTypeCmsSchemaFieldTypes = 'text' | 'textarea' | 'title' | 'slug' | 'select' | 'editor';
 export type ContentTypeCmsSchemaFieldValidation = {
     name: 'required' | 'min' | 'max' | 'minLength' | 'maxLength';
     params?: any;
@@ -59,6 +59,6 @@ export type ContentEditorLayoutTabItem = ContentEditorLayoutBase & {
 
 export type ContentEditorLayoutContent = ContentEditorLayoutBase & {
     type: 'content',
-    itemType: 'field' | 'wysiwyg-1'
+    itemType: 'field' | 'editor'
     fieldName: string
 }
