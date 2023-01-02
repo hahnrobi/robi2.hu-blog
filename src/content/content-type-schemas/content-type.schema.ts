@@ -14,7 +14,7 @@ export type ContentTypeCmsSchemaField = {
     
 }
 export type ContentTypeCmsSchema = {
-    listColumns: string[],
+    listOptions: ContentTypeCmsSchemaListOptions
     searchable: boolean,
     searchableFields: string[],
     draftable: boolean,
@@ -22,6 +22,20 @@ export type ContentTypeCmsSchema = {
     fields: ContentTypeCmsSchemaField[],
     editorLayout?: ContentEditorLayoutBase[]
 }
+
+export type ContentTypeCmsSchemaListOptions = {
+    actions: ContentTypeCmsSchemaListAction[],
+    columns: ContentTypeCmsSchemaListColumns[]
+}
+
+export type ContentTypeCmsSchemaListColumns = {
+    fieldName: string,
+    title: string,
+    hint?: string,
+    defaultHidden?: boolean
+}
+export type ContentTypeCmsSchemaListAction =  'view' | 'publish' | 'unpublish' | 'edit' | 'delete';
+
 
 export type CmsSchema = {
     [key: string]: ContentTypeCmsSchema

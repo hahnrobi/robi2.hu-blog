@@ -10,7 +10,15 @@ import {
 import { TextField } from '../fields/text';
 
 export const articleContentCmsSchema: ContentTypeCmsSchema = {
-  listColumns: ['title', 'slug'],
+  listOptions: {
+    actions: ['edit', 'publish', 'unpublish', 'delete'],
+    columns: [
+      {
+        fieldName: 'title',
+        title: 'TITLE'
+      }
+    ]
+  },
   searchable: false,
   searchableFields: [],
   draftable: false,
