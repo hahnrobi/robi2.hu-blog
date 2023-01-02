@@ -27,7 +27,7 @@ datasource db {
 model Article {
   id         String          @default(uuid()) @id
   title      String
-  slug       String
+  slug       String          @unique
   body       Json?
   published  Boolean?        @default(false)
   /// @DtoRelationRequired
