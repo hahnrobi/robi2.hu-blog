@@ -14,14 +14,40 @@ export type ContentTypeCmsSchemaField = {
     
 }
 export type ContentTypeCmsSchema = {
+    /**
+     * Options that could configure the list view in the CMS.
+     */
     listOptions: ContentTypeCmsSchemaListOptions
+    /**
+     * Should be searchable in the generic search endpoint.
+     */
     searchable: boolean,
+    /**
+     * List of fields that could be used for searching.
+     */
     searchableFields: string[],
+    /**
+     * The entity can be saved as draft, so it would not be displayed on the site, only visible in the admin.
+     */
     draftable: boolean,
+    /**
+     * Indicates whether the given content type could use versioning.
+     * This means that after each change, you can track back all the different versions of the given entity.
+     */
     versioning: boolean,
+    /**
+     * The list of fields for the admin editor's form generator.
+     */
     fields: ContentTypeCmsSchemaField[],
+    /**
+     * Layout for the editor for the fields.
+     * It can contain rows, columns and even tabs to create the layout for the editor.
+     */
     editorLayout?: ContentEditorLayoutBase[],
     populateRelations?: string[],
+    /**
+     * Relational fields that should display the number of connected entities.
+     */
     relationCounts?: string[]
 }
 
