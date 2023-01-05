@@ -17,7 +17,7 @@ export class MenuController {
                 },
                 {
                     identifier: 'ARTICLES',
-                    icon: 'wysiwyg',
+                    icon: 'feed',
                     action: {
                         type: CmsAdminMenuItemActionType.LIST_PAGE,
                         contentType: 'article',
@@ -25,7 +25,7 @@ export class MenuController {
                     children: [
                         {
                             identifier: 'ARTICLE_CREATE',
-                            icon: 'wysiwyg',
+                            icon: 'add',
                             action: {
                                 type: CmsAdminMenuItemActionType.EDITOR,
                                 contentType: 'article',
@@ -35,7 +35,7 @@ export class MenuController {
                 },
                 {
                     identifier: 'ARTICLE_CATEGORIES',
-                    icon: 'wysiwyg',
+                    icon: 'category',
                     action: {
                         type: CmsAdminMenuItemActionType.LIST_PAGE,
                         contentType: 'article-category',
@@ -43,7 +43,7 @@ export class MenuController {
                     children: [
                         {
                             identifier: 'ARTICLE_CATEGORY_CREATE',
-                            icon: 'wysiwyg',
+                            icon: 'add',
                             action: {
                                 type: CmsAdminMenuItemActionType.EDITOR,
                                 contentType: 'article-category',
