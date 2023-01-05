@@ -18,6 +18,13 @@ export class ContentController<CreateDto, UpdateDto, T> {
         const filters = parseQs(filtersQs) as FilterParams;
         return this.content.getItems<T>({pagination: {pageSize: pageSize, pageIndex: pageIndex}, filters: filters, withSchema: withSchema});
     }
+
+    @Get('schema')
+    async getSchema()
+    {
+        return this.content.getCmsSchema();
+    }
+
     @Get('id/:id')
     async getItemById(
         @Param('id') id,

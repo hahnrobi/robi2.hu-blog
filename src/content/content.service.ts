@@ -17,8 +17,8 @@ export class ContentService {
             Logger.log("init with injector value: " + this.contentType);
     }
 
-    getCmsSchema(contentType: string) : ContentTypeCmsSchema | null {
-        return this.cmsSchemas[contentType]
+    getCmsSchema(contentType?: string) : ContentTypeCmsSchema | null {
+        return this.cmsSchemas[contentType ?? this.contentType];
     }
 
     async addItem<T>(data: T): Promise<T | boolean> {
