@@ -21,6 +21,7 @@ export type GetRequestParams<T> = {
     withSchema?: boolean,
     search?: SearchParam[],
     filters?: FilterParams,
+    relationCounts?: string[],
     count?: string[],
     orderBy?: {[key in keyof T]: 'asc' | 'desc'}[],
     aggregate?: (keyof T)[] | string[],

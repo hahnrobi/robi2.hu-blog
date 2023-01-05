@@ -43,10 +43,19 @@ export class ContentService {
                     pageSize: args.pagination.pageSize,
                     total: await this.prisma[this.contentType].count()
             };
+
+            const relParams = this.makeRelationCountParams(args.relationCounts);
+            const selectParams = relParams ? {
+                include: {
+                ...relParams
+                }
+            } : undefined;
+
             const items= await <T[]>this.prisma[this.contentType].findMany({
                     take: args.pagination.pageSize,
                     skip: args.pagination.pageIndex,
-                    where: args.filters
+                    where: args.filters,
+                    ...selectParams
                 })
             return {pagination, items, schema};
             }
@@ -89,5 +98,25 @@ export class ContentService {
                 id: id
             }
         }) ? true : false
+    }
+
+
+    private makeRelationCountParams(relationCountsFields: string[]) {
+        if(!relationCountsFields || relationCountsFields.length === 0) {
+            return undefined;
+        }
+        let sel = {};
+        relationCountsFields.forEach(element => {
+            sel = {...sel, [element]: true}
+        });
+
+        if(sel) {
+            return {_count: {
+                select: sel,
+            },
+            }
+        }else {
+            return undefined;
+        }
     }
 }

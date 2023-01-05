@@ -11,12 +11,14 @@ export class ContentController<CreateDto, UpdateDto, T> {
         @Optional() @Query('pageSize', new DefaultValuePipe(20),  ParseIntPipe) pageSize,
         @Optional() @Query('pageIndex',  new DefaultValuePipe(0), ParseIntPipe) pageIndex = 0,
         @Optional() @Query('schema',  new DefaultValuePipe(0), ParseIntPipe) schema = 0,
+        @Optional() @Query('relationCounts') relationCountsString = "",
         @Optional() @Query('filters') filtersQs: string
     )
     {
+        const relationCounts = relationCountsString && relationCountsString.split(',');
         const withSchema = schema === 1;
         const filters = parseQs(filtersQs) as FilterParams;
-        return this.content.getItems<T>({pagination: {pageSize: pageSize, pageIndex: pageIndex}, filters: filters, withSchema: withSchema});
+        return this.content.getItems<T>({pagination: {pageSize: pageSize, pageIndex: pageIndex}, filters: filters, relationCounts: relationCounts, withSchema: withSchema});
     }
 
     @Get('schema')
