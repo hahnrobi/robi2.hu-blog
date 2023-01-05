@@ -20,12 +20,14 @@ export type ContentTypeCmsSchema = {
     draftable: boolean,
     versioning: boolean,
     fields: ContentTypeCmsSchemaField[],
-    editorLayout?: ContentEditorLayoutBase[]
+    editorLayout?: ContentEditorLayoutBase[],
+    populateRelations?: string[],
+    relationCounts?: string[]
 }
 
 export type ContentTypeCmsSchemaListOptions = {
     actions: ContentTypeCmsSchemaListAction[],
-    columns: ContentTypeCmsSchemaListColumns[]
+    columns: ContentTypeCmsSchemaListColumns[],
 }
 
 export type ContentTypeCmsSchemaListColumns = {

@@ -15,5 +15,6 @@ export const articleCategoryCmsSchema: ContentTypeCmsSchema = {
     searchableFields: [],
     draftable: false,
     versioning: false,
-    fields: []
+    fields: [],
+    relationCounts: ['articles']
 }
