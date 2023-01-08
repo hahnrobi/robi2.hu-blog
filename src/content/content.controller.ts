@@ -1,7 +1,8 @@
 import { Body, Controller, Post, Optional, Param, Response, HttpException, HttpStatus, Get, Query, ParseIntPipe, DefaultValuePipe, Delete, Put, Logger } from '@nestjs/common';
 import { ContentService } from './content.service';
 import { parse as parseQs } from 'qs';
-import { FilterParams } from 'src/definitions/api-request-options';
+import { FilterParams, QuerySortParams } from 'src/definitions/api-request-options';
+import { convertQuerySortToDbSort } from './utils/query-sort-convert';
 
 export class ContentController<CreateDto, UpdateDto, T> {
     constructor(private readonly content: ContentService) {}
@@ -12,13 +13,28 @@ export class ContentController<CreateDto, UpdateDto, T> {
         @Optional() @Query('pageIndex',  new DefaultValuePipe(0), ParseIntPipe) pageIndex = 0,
         @Optional() @Query('schema',  new DefaultValuePipe(0), ParseIntPipe) schema = 0,
         @Optional() @Query('relationCounts') relationCountsString = "",
-        @Optional() @Query('filters') filtersQs: string
+        @Optional() @Query('filters') filtersQs: string,
+        @Optional() @Query('sort') sortQs: string
     )
     {
         const relationCounts = relationCountsString && relationCountsString.split(',');
         const withSchema = schema === 1;
         const filters = parseQs(filtersQs) as FilterParams;
-        return this.content.getItems<T>({pagination: {pageSize: pageSize, pageIndex: pageIndex}, filters: filters, relationCounts: relationCounts, withSchema: withSchema});
+
+        
+        const sortingParsed = parseQs(sortQs) as QuerySortParams;
+        let sorting = null;
+        if(sortingParsed) {
+            sorting = convertQuerySortToDbSort<T>(sortingParsed);
+        }
+
+        return this.content.getItems<T>(
+            {
+                pagination: {pageSize: pageSize, pageIndex: pageIndex},
+                filters: filters,
+                orderBy: sorting,
+                relationCounts: relationCounts,
+                withSchema: withSchema});
     }
 
     @Get('schema')

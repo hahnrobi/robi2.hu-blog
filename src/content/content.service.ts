@@ -55,6 +55,7 @@ export class ContentService {
                     take: args.pagination.pageSize,
                     skip: args.pagination.pageIndex,
                     where: args.filters,
+                    orderBy: args.orderBy,
                     ...selectParams
                 })
             return {pagination, items, schema};

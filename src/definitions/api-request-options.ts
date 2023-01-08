@@ -7,6 +7,12 @@ export type FilterParams = {
         [key in FilterOperators]: any
     }
 }
+export type QuerySortParams = {
+    [key: string]: string
+}
+
+export type SortParams<T> = {[key in keyof T]: 'asc' | 'desc'}[]
+
 
 export type PaginationParams = {
     pageIndex: number,
@@ -23,7 +29,7 @@ export type GetRequestParams<T> = {
     filters?: FilterParams,
     relationCounts?: string[],
     count?: string[],
-    orderBy?: {[key in keyof T]: 'asc' | 'desc'}[],
+    orderBy?: SortParams<T>,
     aggregate?: (keyof T)[] | string[],
     pagination?: PaginationParams
 }
