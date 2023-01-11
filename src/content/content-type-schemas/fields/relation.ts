@@ -7,7 +7,8 @@ export class RelationField extends BaseField {
         public label: string,
 		type: ContentTypeCmsSchemaFieldTypes,
         public validations: ContentTypeCmsSchemaFieldValidation[] = [],
-		public collectionName: string
+		public collectionName: string,
+        public useProp?: string
     ) {
         super(name, label, type, validations);
     }

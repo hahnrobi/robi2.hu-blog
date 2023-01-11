@@ -7,8 +7,9 @@ export class SelectField extends RelationField {
         public name: string,
         public label: string,
         public validations: ContentTypeCmsSchemaFieldValidation[] = [],
-		public collectionName: string
+		public collectionName: string,
+        public useProp?: string
     ) {
-        super(name, label, 'select', validations, collectionName);
+        super(name, label, 'select', validations, collectionName, useProp);
     }
 }

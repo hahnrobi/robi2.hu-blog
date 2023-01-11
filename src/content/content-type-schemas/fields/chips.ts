@@ -7,8 +7,9 @@ export class ChipsField extends RelationField {
         public name: string,
         public label: string,
         public validations: ContentTypeCmsSchemaFieldValidation[] = [],
-		public collectionName: string
+		public collectionName: string,
+		public useProp?: string
     ) {
-        super(name, label, 'chips', validations, collectionName);
+        super(name, label, 'chips', validations, collectionName, useProp);
     }
 }
