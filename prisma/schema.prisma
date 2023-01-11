@@ -34,6 +34,7 @@ model Article {
   /// @DtoRelationCanConnectOnCreate
   category   ArticleCategory @relation(fields: [categoryId], references: [id])
   categoryId String
+  tags       ArticleTagsOnArticles[]
 }
 
 model ArticleCategory {
@@ -41,4 +42,19 @@ model ArticleCategory {
   title     String     
   slug      String      @unique
   articles  Article[]
+}
+
+model ArticleTag {
+  id        String      @default(uuid()) @id
+  title     String     
+  slug      String      @unique
+  articles       ArticleTagsOnArticles[]
+}
+model ArticleTagsOnArticles {
+  article       Article     @relation(fields: [articleId], references: [id])
+  articleId     String // relation scalar field (used in the `@relation` attribute above)
+  articleTag    ArticleTag @relation(fields: [articleTagId], references: [id])
+  articleTagId  String // relation scalar field (used in the `@relation` attribute above)
+
+  @@id([articleId, articleTagId])
 }

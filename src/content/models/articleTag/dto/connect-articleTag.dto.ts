@@ -1,5 +1,5 @@
 
-  export class ConnectArticleDto {
+  export class ConnectArticleTagDto {
     id?: string;
 slug?: string;
   }
