@@ -39,8 +39,8 @@ export class ContentService {
         if(this.prisma.hasOwnProperty(this.contentType)) {
             const schema = args.withSchema ? this.getCmsSchema(this.contentType) : undefined;
 
-            const relParams = this.makeRelationCountParams(args.relationCounts);
-            const selectParams = relParams ? {
+            const relParams = this.makeAggregationParams({relationCountsFields: args.relationCounts, aggregateFields: args.aggregate });
+            const selectParams = Object.keys(relParams).length > 0 ? {
                 include: {
                 ...relParams
                 }
@@ -65,11 +65,20 @@ export class ContentService {
     async getItemById<T>(id: string, args: any) {
         const schema = args.withSchema ? this.getCmsSchema(this.contentType) : undefined;
 
+        const additionalIncludes = this.makeAggregationParams({relationCountsFields: args.relationCountsFields, aggregateFields: args.aggregate})
+
+        const selectParams = Object.keys(additionalIncludes).length > 0 ? {
+            include: {
+            ...additionalIncludes
+            }
+        } : undefined;
+
         return {
             item: await this.prisma[this.contentType].findUnique({
             where: {
                 id: id
-            }
+            },
+            ...selectParams
         }),
         schema,
 
@@ -103,22 +112,25 @@ export class ContentService {
     }
 
 
-    private makeRelationCountParams(relationCountsFields: string[]) {
-        if(!relationCountsFields || relationCountsFields.length === 0) {
-            return undefined;
-        }
-        let sel = {};
-        relationCountsFields.forEach(element => {
-            sel = {...sel, [element]: true}
+    private makeAggregationParams(args: {relationCountsFields?: string[], aggregateFields?: string[]}) {
+        const {relationCountsFields, aggregateFields} = args;
+        let countSelect = {};
+        let aggregateSelect = {};
+        relationCountsFields && relationCountsFields.forEach(element => {
+            countSelect = {...countSelect, [element]: true}
+        });
+        aggregateFields && aggregateFields.forEach(element => {
+            aggregateSelect = {...aggregateSelect, [element]: true}
         });
 
-        if(sel) {
-            return {_count: {
-                select: sel,
+
+        const countQuery = Object.keys(countSelect).length > 0 ? { _count: {
+                select: countSelect,
             },
-            }
-        }else {
-            return undefined;
+        } : {}
+        return {
+            ...aggregateSelect,
+            ...countQuery
         }
     }
 }

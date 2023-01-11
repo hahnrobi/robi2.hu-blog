@@ -12,13 +12,15 @@ export class ContentController<CreateDto, UpdateDto, T> {
         @Optional() @Query('pageIndex',  new DefaultValuePipe(0), ParseIntPipe) pageIndex = 0,
         @Optional() @Query('schema',  new DefaultValuePipe(0), ParseIntPipe) schema = 0,
         @Optional() @Query('relationCounts') relationCountsString = "",
+        @Optional() @Query('populate') populateQs: string,
         @Optional() @Query('filter') filtersQs: string
     )
     {
         const relationCounts = relationCountsString && relationCountsString.split(',');
         const withSchema = schema === 1;
         const filters = parseQs(filtersQs) as FilterParams;
-        return await this.content.getItems<T>({pagination: {pageSize: pageSize, pageIndex: pageIndex}, filters: filters, relationCounts: relationCounts, withSchema: withSchema});
+        const populateFields = Object.keys(parseQs(populateQs) as object) ?? null;
+        return await this.content.getItems<T>({pagination: {pageSize: pageSize, pageIndex: pageIndex}, filters: filters, relationCounts: relationCounts, withSchema: withSchema, aggregate: populateFields});
     }
 
     @Get('schema')
@@ -31,10 +33,12 @@ export class ContentController<CreateDto, UpdateDto, T> {
     async getItemById(
         @Param('id') id,
         @Optional() @Query('schema',  new DefaultValuePipe(0), ParseIntPipe) schema = 0,
+        @Optional() @Query('populate') populateQs: string,
     )
     {
         const withSchema = schema === 1;
-        return this.content.getItemById<T>(id, {withSchema: withSchema});
+        const populateFields = Object.values(parseQs(populateQs) as object) ?? null;
+        return this.content.getItemById<T>(id, {withSchema: withSchema, aggregate: populateFields});
     }
     @Get('slug/:id')
     async getItemBySlug(

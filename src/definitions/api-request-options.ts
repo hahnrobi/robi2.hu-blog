@@ -24,6 +24,6 @@ export type GetRequestParams<T> = {
     relationCounts?: string[],
     count?: string[],
     orderBy?: {[key in keyof T]: 'asc' | 'desc'}[],
-    aggregate?: (keyof T)[] | string[],
+    aggregate?: string[],
     pagination?: PaginationParams
 }
