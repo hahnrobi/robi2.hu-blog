@@ -38,11 +38,6 @@ export class ContentService {
     ): Promise<ComplexResponse<T[]>> {
         if(this.prisma.hasOwnProperty(this.contentType)) {
             const schema = args.withSchema ? this.getCmsSchema(this.contentType) : undefined;
-            const pagination = args.pagination && {
-                    pageIndex: args.pagination.pageIndex,
-                    pageSize: args.pagination.pageSize,
-                    total: await this.prisma[this.contentType].count()
-            };
 
             const relParams = this.makeRelationCountParams(args.relationCounts);
             const selectParams = relParams ? {
@@ -51,12 +46,19 @@ export class ContentService {
                 }
             } : undefined;
 
-            const items= await <T[]>this.prisma[this.contentType].findMany({
-                    take: args.pagination.pageSize,
-                    skip: args.pagination.pageIndex,
-                    where: args.filters,
-                    ...selectParams
-                })
+            const queryCondition = {
+                take: args.pagination.pageSize,
+                skip: args.pagination.pageIndex,
+                where: args.filters,
+            }
+
+            const items= await <T[]>this.prisma[this.contentType].findMany({...queryCondition,...selectParams})
+            const pagination = args.pagination && {
+                    pageIndex: args.pagination.pageIndex,
+                    pageSize: args.pagination.pageSize,
+                    total: await this.prisma[this.contentType].count(queryCondition)
+            };
+
             return {pagination, items, schema};
             }
     }
