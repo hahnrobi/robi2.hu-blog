@@ -8,6 +8,7 @@ import {
   ContentTypeCmsSchema,
 } from '../content-type.schema';
 import { TextField } from '../fields/text';
+import { ChipsField } from '../fields/chips';
 
 export const articleContentCmsSchema: ContentTypeCmsSchema = {
   listOptions: {
@@ -23,6 +24,7 @@ export const articleContentCmsSchema: ContentTypeCmsSchema = {
   searchableFields: [],
   draftable: false,
   versioning: false,
+  populateRelations: ['category', 'tags'],
   fields: [
     new TitleField('title', 'TITLE', [
       { name: 'required' },
@@ -40,6 +42,14 @@ export const articleContentCmsSchema: ContentTypeCmsSchema = {
       'CATEGORY',
       [{ name: 'required' }],
       'article-category',
+      'category'
+    ),
+    new ChipsField(
+      'tags',
+      'TAGS',
+      [{ name: 'required' }],
+      'article-tag',
+      'tags'
     ),
   ],
   editorLayout: [
@@ -86,7 +96,12 @@ export const articleContentCmsSchema: ContentTypeCmsSchema = {
                     type: 'content',
                     itemType: 'field',
                     fieldName: 'categoryId',
-                  },
+                },
+                <ContentEditorLayoutContent>{
+                  type: 'content',
+                  itemType: 'field',
+                  fieldName: 'tags',
+              },
               ],
             },
           ],

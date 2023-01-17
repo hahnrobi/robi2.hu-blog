@@ -1,6 +1,6 @@
 
 
-export type ContentTypeCmsSchemaFieldTypes = 'text' | 'textarea' | 'title' | 'slug' | 'select' | 'editor';
+export type ContentTypeCmsSchemaFieldTypes = 'text' | 'textarea' | 'title' | 'slug' | 'select' | 'editor' | 'chips';
 export type ContentTypeCmsSchemaFieldValidation = {
     name: 'required' | 'min' | 'max' | 'minLength' | 'maxLength';
     params?: any;

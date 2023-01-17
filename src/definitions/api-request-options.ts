@@ -29,7 +29,7 @@ export type GetRequestParams<T> = {
     filters?: FilterParams,
     relationCounts?: string[],
     count?: string[],
-    orderBy?: SortParams<T>,
-    aggregate?: (keyof T)[] | string[],
+    orderBy?: {[key in keyof T]: 'asc' | 'desc'}[],
+    aggregate?: string[],
     pagination?: PaginationParams
 }

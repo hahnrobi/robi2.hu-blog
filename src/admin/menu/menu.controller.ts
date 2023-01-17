@@ -50,6 +50,14 @@ export class MenuController {
                             },
                         }
                     ]
+                },
+                {
+                    identifier: 'ARTICLE_TAGS',
+                    icon: 'sell',
+                    action: {
+                        type: CmsAdminMenuItemActionType.LIST_PAGE,
+                        contentType: 'article-tag',
+                    }
                 }
             ]
         }
