@@ -13,7 +13,7 @@ export class ContentController<CreateDto, UpdateDto, T> {
         @Optional() @Query('pageIndex',  new DefaultValuePipe(0), ParseIntPipe) pageIndex = 0,
         @Optional() @Query('schema',  new DefaultValuePipe(0), ParseIntPipe) schema = 0,
         @Optional() @Query('relationCounts') relationCountsString = "",
-        @Optional() @Query('sort') sortQs: string
+        @Optional() @Query('sort') sortQs: string,
         @Optional() @Query('populate') populateQs: string,
         @Optional() @Query('filter') filtersQs: string
     )
@@ -63,7 +63,7 @@ export class ContentController<CreateDto, UpdateDto, T> {
         @Param('id') id,
         @Body() data: UpdateDto
     )
-    {
+    { 
         return this.content.updateItem(id, data);
     }
 

@@ -1,10 +1,10 @@
 
-import {ArticleTagsOnArticles} from '../../articleTagsOnArticles/entities/articleTagsOnArticles.entity'
+import {Article} from '../../article/entities/article.entity'
 
 
 export class ArticleTag {
   id: string ;
 title: string ;
 slug: string ;
-articles?: ArticleTagsOnArticles[] ;
+articles?: Article[] ;
 }

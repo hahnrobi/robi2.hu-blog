@@ -1,7 +1,7 @@
 
 import {Prisma} from '@prisma/client'
 import {ArticleCategory} from '../../articleCategory/entities/articleCategory.entity'
-import {ArticleTagsOnArticles} from '../../articleTagsOnArticles/entities/articleTagsOnArticles.entity'
+import {ArticleTag} from '../../articleTag/entities/articleTag.entity'
 
 
 export class Article {
@@ -12,5 +12,5 @@ body: Prisma.JsonValue  | null;
 published: boolean  | null;
 category?: ArticleCategory ;
 categoryId: string ;
-tags?: ArticleTagsOnArticles[] ;
+tags?: ArticleTag[] ;
 }
