@@ -96,11 +96,41 @@ export class ContentService {
 
  
     async updateItem<T>(id: string, data: T) {
+        const keys = Object.keys(data);
+        const populateKeys = keys.filter((key) => Array.isArray(data[key]));
+        let includeFields = {};
+        populateKeys.forEach(key => {
+            includeFields[key] = true;
+        })
+        const currentValue = await this.prisma[this.contentType].findUnique({
+            where: {
+                id: id
+            },
+            include: includeFields ?? {}
+        });
+        let queryData = data;
+        Logger.log("Current value: " + JSON.stringify(currentValue));
+        keys.forEach(key => {
+            if(Array.isArray(queryData[key])) {
+                Logger.log("This is an array: " + key + "-"+ JSON.stringify(queryData[key]));
+                const connect = Array.isArray(currentValue[key]) ? queryData[key].filter(x => !currentValue[key].map(x=>x.id).includes(x)).map(item => {return {id: item}}) : queryData[key].map(item => {return {id: item}});
+                Logger.log("Current connected elements: " + JSON.stringify(currentValue[key]));
+                const disconnect = Array.isArray(currentValue[key]) ? currentValue[key].map(x=>x.id).filter(x => !queryData[key].includes(x)).map(item => {return {id: item}}) : [];
+                Logger.log("Relation items to connect: " + JSON.stringify(connect));
+                Logger.log("Relation items to disconnect: " + JSON.stringify(disconnect));
+
+                queryData[key] = {
+                    connect,
+                    disconnect
+                }
+            }
+        });
         return this.prisma[this.contentType].update({
             where: {
                 id: id
             }, 
-            data: data
+            include: includeFields,
+            data: queryData
         })
     }  
 
