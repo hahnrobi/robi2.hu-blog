@@ -4,7 +4,7 @@ import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class CryptoService {
-    private saltRounds = 12;
+    private saltRounds = 10;
     async checkPasswordAgainstHash(password: string, hash: string) {
         return await bcrypt.compare(password, hash);
     }

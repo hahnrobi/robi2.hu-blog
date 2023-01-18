@@ -1,19 +1,20 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { CryptoService } from 'src/crypto/crypto.service';
-import { User, UsersService } from '../users/users.service';
+import { Users2Service } from 'src/users2/users2.service';
 
 @Injectable()
 export class AuthService {
   constructor(
-    private readonly usersService: UsersService,
+    private readonly usersService: Users2Service,
     private readonly cryptoService: CryptoService,
     private readonly jwtService: JwtService
     ) {}
 
   public async validateUser(email: string, pass: string): Promise<any> {
-    const user = await this.usersService.findOne(email);
-    if (user && await this.cryptoService.checkPasswordAgainstHash(pass, user.password)) {
+    const user = await this.usersService.getUserByEmail(email);
+    const passwordHash = await this.usersService.getUserPasswordHash(user.id);
+    if (user && await this.cryptoService.checkPasswordAgainstHash(pass, passwordHash)) {
       return user;
     }
     await delayLogin();
@@ -21,9 +22,9 @@ export class AuthService {
   }
 
   public async login(user: any) {
-    const payload = { sub: user._id  };
+    const payload = { sub: user.id  };
     return {
-      access_token: this.jwtService.sign(payload),
+      access_token: this.jwtService.sign(payload, {expiresIn: "10m"}),
     };
   }
 }

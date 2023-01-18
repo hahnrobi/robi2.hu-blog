@@ -6,6 +6,7 @@ import { ContentModule } from 'src/content/content.module';
 
 @Module({
   imports: [PrismaModule, ContentModule],
+  exports: [Users2Service],
   providers: [Users2Service],
   controllers: [Users2Controller]
 })

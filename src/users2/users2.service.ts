@@ -6,12 +6,26 @@ import * as bcrypt from 'bcrypt';
 export class Users2Service {
     constructor(private readonly prisma: PrismaService) {}
 
-    async getUser(id: string) {
+    async getUserById(id: string) {
         return await this.prisma.user.findUnique({
             where: {
                 id
             }
         })
+    }
+    async getUserByEmail(email: string) {
+        return await this.prisma.user.findUnique({
+            where: {
+                email
+            }
+        })
+    }
+    async getUserPasswordHash(id: string) {
+        return (await this.prisma.userPassword.findUnique({
+            where: {
+                userId: id
+            }
+        })).password
     }
     async createUser(email: string, password: string, otherFields: any) {
         const salt = bcrypt.genSaltSync(10);

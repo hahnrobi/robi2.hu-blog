@@ -8,7 +8,7 @@ export class Users2Controller {
     async getUser(
         @Param('id') id
     ) {
-        return await this.service.getUser(id);
+        return await this.service.getUserById(id);
     }
     @Post('')
     async createUser(
