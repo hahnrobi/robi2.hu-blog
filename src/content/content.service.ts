@@ -23,7 +23,24 @@ export class ContentService {
 
     async addItem<T>(data: T): Promise<T | boolean> {
         if(this.prisma.hasOwnProperty(this.contentType)) {
-            return this.prisma[this.contentType].create({data: data});
+            const keys = Object.keys(data);
+            const populateKeys = keys.filter((key) => Array.isArray(data[key]));
+            let includeFields = {};
+            populateKeys.forEach(key => {
+                includeFields[key] = true;
+            })
+            let queryData = data;
+            keys.forEach(key => {
+                if(Array.isArray(queryData[key])) {
+                    queryData[key] = {
+                        connect: queryData[key].map(item => {return {id: item}})
+                    }
+                }
+            });
+            return this.prisma[this.contentType].create({
+                include: includeFields,
+                data: queryData
+            })
         }
         return false;
     }
