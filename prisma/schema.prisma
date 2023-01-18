@@ -24,6 +24,19 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model User {
+  id         String         @default(uuid()) @id
+  name       String
+  email      String         @unique
+  password   UserPassword[]
+}
+model UserPassword {
+  /// @DtoRelationRequired
+  user   User? @relation(fields: [userId], references: [id])
+  userId String @unique
+  password   String
+}
+
 model Article {
   id         String          @default(uuid()) @id
   title      String
